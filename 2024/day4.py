@@ -1,4 +1,4 @@
-file = open("4.txt", "r")
+file = open("data/4.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 count = 0
@@ -63,4 +63,20 @@ for h, line in enumerate(lines):
                 print(f"[{h}:{w}] >v {word}")
                 count += 1
 
-print(count)
+print(f"part1: {count}")
+
+# Part 2
+
+count = 0
+for h, line in enumerate(lines):
+    for w, char in enumerate(line):
+        if char != "A" or w <= 0 or w >= len(line) - 1 or h <= 0 or h >= len(lines) - 1:
+            continue
+
+        mas1 = ''.join([lines[h - 1][w - 1], char, lines[h + 1][w + 1]])
+        mas2 = ''.join([lines[h - 1][w + 1], char, lines[h + 1][w - 1]])
+        if mas1 in ["MAS", "SAM"] and mas2 in ["MAS", "SAM"]:
+            count += 1
+            print(f"[{h}:{w}] {mas1} {mas2}")
+
+print(f"part2: {count}")
