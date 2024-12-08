@@ -71,6 +71,7 @@ def run_simulation(lines, direction, pos):
                     track_pos_and_dir.add((pos, direction))
     return
 
+
 def main():
     file = open("data/6.txt", "r")
     lines = [line.strip() for line in file.readlines()]
@@ -94,6 +95,7 @@ def main():
 
     print(f"Unique obstructions: {len(unique_obstructions)}")
     return
+
 
 if __name__ == "__main__":
     main()
