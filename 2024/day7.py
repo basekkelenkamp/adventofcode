@@ -2,6 +2,15 @@ from itertools import product
 file = open("7.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
+def evaluate_left_to_right(nums, operators):
+    result = nums[0]
+    for i, op in enumerate(operators):
+        if op == "+":
+            result += nums[i + 1]
+        elif op == "*":
+            result *= nums[i + 1]
+    return result
+
 count = 0
 for line in lines:
     p1, p2 = line.split(":")
@@ -14,14 +23,10 @@ for line in lines:
 
     op_combinations = product(["+", "*"], repeat=len(nums) - 1)
     for op_combination in op_combinations:
-        expression = str(nums[0])
-        for i, op in enumerate(op_combination):
-            expression += op + str(nums[i + 1])
-
-        print(expression)
-        res = eval(expression)
+        res = evaluate_left_to_right(nums, op_combination)
         if res == result:
             count += result
             break
+
 
 print(count)
