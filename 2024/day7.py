@@ -1,5 +1,5 @@
 from itertools import product
-file = open("7.txt", "r")
+file = open("data/7.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 def evaluate_left_to_right(nums, operators):
