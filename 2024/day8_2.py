@@ -1,6 +1,20 @@
 from itertools import combinations
 from collections import defaultdict
 
+def get_all_valid_tuples(t1, diff, board_size, op="+"):
+    valid_tuples = []
+    current = t1
+    while True:
+        if op == "+":
+            current = add_tuple(current, diff)
+        else:
+            current = subtract_tuple(current, diff)
+        if 0 <= current[0] < board_size[0] and 0 <= current[1] < board_size[1]:
+            valid_tuples.append(current)
+        else:
+            break
+    return valid_tuples
+
 def add_tuple(t1, t2):
     return t1[0] + t2[0], t1[1] + t2[1]
 
@@ -8,8 +22,8 @@ def subtract_tuple(t1, t2):
     return t1[0] - t2[0], t1[1] - t2[1]
 
 def main():
-    file = open("data/8.txt", "r")
-    lines = [line.strip() for line in file.readlines()]
+    with open("data/8.txt", "r") as file:
+        lines = [line.strip() for line in file.readlines()]
     char_pos = defaultdict(list)
     board_size = (len(lines), len(lines[0]))
     for h, line in enumerate(lines):
@@ -30,16 +44,19 @@ def main():
                 diff = (comb[1][0] - comb[0][0], comb[1][1] - comb[0][1])
 
                 print(f"{comb} -> diff: {diff}")
-                add = add_tuple(comb[1], diff)
-                sub = subtract_tuple(comb[0], diff)
-                print(f"add0: {add}, sub0: {sub}")
-                if 0 <= sub[0] < board_size[0] and 0 <= sub[1] < board_size[1] and sub not in positions:
-                    print(f"adding: {sub}")
-                    anti_nodes.append(sub)
+                adds = get_all_valid_tuples(comb[1], diff, board_size, "+")
+                subs = get_all_valid_tuples(comb[0], diff, board_size, "-")
+                print("adds", adds)
+                print("subs", subs)
+                for sub in subs:
+                    if sub not in positions:
+                        print(f"adding: {sub}")
+                        anti_nodes.append(sub)
 
-                if 0 <= add[0] < board_size[0] and 0 <= add[1] < board_size[1] and add not in positions:
-                    print(f"adding: {add}")
-                    anti_nodes.append(add)
+                for add in adds:
+                    if add not in positions:
+                        print(f"adding: {add}")
+                        anti_nodes.append(add)
 
     print(len(set(anti_nodes)))
 
